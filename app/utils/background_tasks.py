@@ -3,7 +3,7 @@ Background task management using asyncio.
 Demonstrates async background tasks and event loop concepts.
 """
 import asyncio
-from typing import Set, Coroutine, Any
+from typing import Set, Awaitable
 from datetime import datetime
 import logging
 
@@ -18,7 +18,7 @@ class BackgroundTaskManager:
     
     def __init__(self) -> None:
         """Initialize the background task manager."""
-        self.tasks: Set[asyncio.Task] = set()
+        self.tasks: Set[asyncio.Task[None]] = set()
         self.running = False
         self._stop_event = asyncio.Event()
     
@@ -34,7 +34,10 @@ class BackgroundTaskManager:
         self.running = True
         logger.info("🚀 Starting BackgroundTaskManager...")
         logger.info(f"📊 Event loop: {asyncio.get_event_loop()}")
-        logger.info(f"🔄 Event loop is running: {asyncio.get_event_loop().is_running()}")
+        logger.info(
+            f"🔄 Event loop is running: "
+            f"{asyncio.get_event_loop().is_running()}"
+        )
         
         # Start background tasks
         task1 = asyncio.create_task(self._periodic_cleanup_task())
@@ -120,7 +123,8 @@ class BackgroundTaskManager:
                 logger.info(
                     f"[{current_time}] 💓 Health check - "
                     f"Event loop running: {event_loop.is_running()}, "
-                    f"Active tasks: {len([t for t in asyncio.all_tasks() if not t.done()])}"
+                    f"Active tasks: "
+                    f"{len([t for t in asyncio.all_tasks() if not t.done()])}"
                 )
                 
             except asyncio.CancelledError:
@@ -130,12 +134,12 @@ class BackgroundTaskManager:
                 logger.error(f"❌ Error in health check task: {e}")
                 await asyncio.sleep(10)  # Wait before retrying
     
-    def add_task(self, coro: Coroutine[Any, Any, Any]) -> asyncio.Task[Any]:
+    def add_task(self, coro: Awaitable[None]) -> asyncio.Task[None]:
         """
         Add a new background task to the manager.
         
         Args:
-            coro: Coroutine to run as a background task
+            coro: Awaitable (coroutine) to run as a background task
             
         Returns:
             The created task

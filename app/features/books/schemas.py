@@ -1,6 +1,5 @@
 """
 Book Pydantic schemas for request/response validation.
-Demonstrates type safety with Pydantic.
 """
 from uuid import UUID
 from datetime import datetime
@@ -57,7 +56,7 @@ class BookResponse(BookBase):
     seller_id: UUID
     created_at: datetime
     updated_at: datetime
-    price: float = Field(..., gt=0, description="Book price")  # Override to use float instead of Decimal
+    price: float = Field(..., gt=0, description="Book price")
 
     @field_validator("price", mode="before")
     @classmethod

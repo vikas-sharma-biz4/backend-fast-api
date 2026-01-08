@@ -53,7 +53,7 @@ async def init_db() -> None:
     """
     try:
         from app.models import book, user  # noqa: F401
-        
+
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
         print("✅ Database tables initialized successfully")
@@ -64,4 +64,3 @@ async def init_db() -> None:
         print(f"⚠️  Warning: Could not initialize database: {e}")
         print("⚠️  The application will continue, but database operations may fail.")
         print("⚠️  Please check your DATABASE_URL in .env file and ensure PostgreSQL is running.")
-

@@ -16,9 +16,9 @@ RoleType = Literal["buyer", "seller", "admin"]
 
 class User(Base, TimestampMixin):
     """User model for authentication and authorization."""
-    
+
     __tablename__ = "users"
-    
+
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
@@ -30,4 +30,3 @@ class User(Base, TimestampMixin):
     )
     google_id: Mapped[Optional[str]] = mapped_column(String(255), unique=True, nullable=True)
     profile_picture_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
-

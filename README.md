@@ -99,4 +99,3 @@ pyright app
 ## Database
 
 Uses PostgreSQL with async SQLAlchemy. Make sure PostgreSQL is running and the database exists before starting the application.
-

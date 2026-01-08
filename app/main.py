@@ -11,7 +11,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import engine, init_db
-from app.routers import books, auth, user
+from app.features.auth import routes as auth_routes
+from app.features.books import routes as books_routes
+from app.features.user import routes as user_routes
+from app.features.upload import routes as upload_routes
 from app.utils.background_tasks import BackgroundTaskManager
 from app.utils.decorators import log_execution_time
 
@@ -27,7 +30,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     print("🚀 Starting up FastAPI application...")
     print(f"📊 Event loop: {asyncio.get_event_loop()}")
     print(f"🔄 Is event loop running: {asyncio.get_event_loop().is_running()}")
-    
+
     # Initialize database (gracefully handle connection errors)
     try:
         await init_db()
@@ -37,7 +40,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     except Exception as e:
         print(f"⚠️  Database initialization error: {e}")
         print("⚠️  Continuing startup without database initialization...")
-    
+
     # Start background task manager
     try:
         task_manager = BackgroundTaskManager()
@@ -45,11 +48,11 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         asyncio.create_task(task_manager.start())
     except Exception as e:
         print(f"⚠️  Background task manager error: {e}")
-    
+
     print("✅ Application started successfully")
-    
+
     yield
-    
+
     # Shutdown: Clean up resources
     print("🛑 Shutting down FastAPI application...")
     try:
@@ -75,7 +78,7 @@ def create_app() -> FastAPI:
         version="1.0.0",
         lifespan=lifespan,
     )
-    
+
     # CORS middleware
     app.add_middleware(
         CORSMiddleware,
@@ -84,15 +87,24 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    
-    # Include routers
-    app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
-    app.include_router(books.router, prefix="/api/books", tags=["books"])
-    app.include_router(user.router, prefix="/api/user", tags=["user"])
-    
+
+    # Include feature-based routers
+    app.include_router(
+        auth_routes.router, prefix="/api/auth", tags=["auth"]
+    )
+    app.include_router(
+        books_routes.router, prefix="/api/books", tags=["books"]
+    )
+    app.include_router(
+        user_routes.router, prefix="/api/user", tags=["user"]
+    )
+    app.include_router(
+        upload_routes.router, prefix="/api/upload", tags=["upload"]
+    )
+
     @app.get("/")
     @log_execution_time
-    async def root() -> dict[str, str]:
+    async def root() -> dict[str, str | dict[str, bool]]:
         """
         Root endpoint demonstrating async function and decorator.
         """
@@ -103,12 +115,12 @@ def create_app() -> FastAPI:
                 "is_running": asyncio.get_event_loop().is_running(),
             },
         }
-    
+
     @app.get("/health")
     async def health_check() -> dict[str, str]:
         """Health check endpoint."""
         return {"status": "healthy"}
-    
+
     return app
 
 
@@ -116,11 +128,10 @@ app = create_app()
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
         port=8000,
         reload=True,
     )
-

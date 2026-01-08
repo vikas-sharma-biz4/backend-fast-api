@@ -3,6 +3,7 @@ Authentication routes.
 """
 import logging
 from datetime import timedelta
+from typing import Any
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.responses import RedirectResponse
@@ -36,13 +37,13 @@ async def get_current_user(
     """Get current authenticated user."""
     from jose import JWTError, jwt
     from uuid import UUID
-    
+
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    
+
     try:
         payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
         user_id_str: str | None = payload.get("sub")
@@ -51,11 +52,11 @@ async def get_current_user(
         user_id = UUID(user_id_str)
     except (JWTError, ValueError):
         raise credentials_exception
-    
+
     user = await get_user_by_id(db, user_id)
     if user is None:
         raise credentials_exception
-    
+
     return UserResponse.model_validate(user)
 
 
@@ -63,7 +64,7 @@ async def get_current_user(
 async def signup(user_data: UserSignup, db: AsyncSession = Depends(get_db)):
     """User signup endpoint."""
     from app.services.auth_service import get_user_by_email
-    
+
     # Check if user already exists
     existing_user = await get_user_by_email(db, user_data.email)
     if existing_user:
@@ -71,7 +72,7 @@ async def signup(user_data: UserSignup, db: AsyncSession = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered",
         )
-    
+
     user = await create_user(db, user_data)
     return UserResponse.model_validate(user)
 
@@ -89,13 +90,13 @@ async def login(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": str(user.id)},
         expires_delta=access_token_expires,
     )
-    
+
     return {"access_token": access_token, "token_type": "bearer"}
 
 
@@ -133,13 +134,13 @@ async def google_oauth():
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Google OAuth is not configured. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your .env file.",
         )
-    
+
     # Google OAuth endpoints
     authorization_endpoint = "https://accounts.google.com/o/oauth2/v2/auth"
-    
+
     # Ensure redirect URI is properly formatted (strip any whitespace)
     redirect_uri = settings.GOOGLE_CALLBACK_URL.strip()
-    
+
     # Build authorization URL
     params = {
         "client_id": settings.GOOGLE_CLIENT_ID,
@@ -149,14 +150,14 @@ async def google_oauth():
         "access_type": "offline",
         "prompt": "consent",
     }
-    
+
     # Log OAuth initiation (only in development)
     if settings.ENVIRONMENT == "development":
         logger.debug(
             f"OAuth redirect_uri: '{redirect_uri}', "
             f"length: {len(redirect_uri)}"
         )
-    
+
     auth_url = f"{authorization_endpoint}?{urlencode(params)}"
     return RedirectResponse(url=auth_url)
 
@@ -175,37 +176,38 @@ async def google_oauth_callback(
         return RedirectResponse(
             url=f"{settings.FRONTEND_URL}/login?error=oauth_failed"
         )
-    
+
     if not code:
         return RedirectResponse(
             url=f"{settings.FRONTEND_URL}/login?error=oauth_failed"
         )
-    
+
     if not settings.GOOGLE_CLIENT_ID or not settings.GOOGLE_CLIENT_SECRET:
         return RedirectResponse(
             url=f"{settings.FRONTEND_URL}/login?error=oauth_failed"
         )
-    
+
     try:
         # Exchange authorization code for tokens
         oauth_client = AsyncOAuth2Client(
             client_id=settings.GOOGLE_CLIENT_ID,
             client_secret=settings.GOOGLE_CLIENT_SECRET,
         )
-        
+
         token_endpoint = "https://oauth2.googleapis.com/token"
-        token_response = await oauth_client.fetch_token(
+        # Type ignore: authlib's fetch_token return type is not properly typed
+        token_response: dict[str, Any] = await oauth_client.fetch_token(  # type: ignore[assignment]
             token_endpoint,
             code=code,
             redirect_uri=settings.GOOGLE_CALLBACK_URL,
         )
-        
+
         access_token = token_response.get("access_token")
         if not access_token:
             return RedirectResponse(
                 url=f"{settings.FRONTEND_URL}/login?error=oauth_failed"
             )
-        
+
         # Get user info from Google using httpx directly
         userinfo_endpoint = "https://www.googleapis.com/oauth2/v2/userinfo"
         async with httpx.AsyncClient() as client:
@@ -215,16 +217,16 @@ async def google_oauth_callback(
             )
             userinfo_response.raise_for_status()
             userinfo = userinfo_response.json()
-        
+
         google_id = userinfo.get("id")
         email = userinfo.get("email")
         name = userinfo.get("name") or userinfo.get("email", "").split("@")[0]
-        
+
         if not google_id or not email:
             return RedirectResponse(
                 url=f"{settings.FRONTEND_URL}/login?error=oauth_failed"
             )
-        
+
         # Create or update user
         user, is_new_user = await create_or_update_oauth_user(
             db=db,
@@ -232,33 +234,31 @@ async def google_oauth_callback(
             email=email,
             name=name,
         )
-        
+
         # Create JWT token
         access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
         jwt_token = create_access_token(
             data={"sub": str(user.id)},
             expires_delta=access_token_expires,
         )
-        
+
         # Build redirect URL with token and user info
         user_response = UserResponse.model_validate(user)
         user_json = user_response.model_dump_json()
-        
+
         redirect_params = {
             "token": jwt_token,
             "user": user_json,
         }
-        
+
         if is_new_user:
             redirect_params["newUser"] = "true"
-        
+
         redirect_url = f"{settings.FRONTEND_URL}/auth/callback?{urlencode(redirect_params)}"
         return RedirectResponse(url=redirect_url)
-        
+
     except Exception as e:
         logger.error(f"Google OAuth error: {e}", exc_info=True)
         return RedirectResponse(
             url=f"{settings.FRONTEND_URL}/login?error=oauth_failed"
         )
-
-

@@ -37,7 +37,7 @@ def create_access_token(
         expire = datetime.utcnow() + timedelta(
             minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
         )
-    
+
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(
         to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM
@@ -85,4 +85,3 @@ async def authenticate_user(
     if not verify_password(password, user.password):
         return None
     return user
-

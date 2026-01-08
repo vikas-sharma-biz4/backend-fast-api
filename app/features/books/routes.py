@@ -1,6 +1,5 @@
 """
-Book routes with full CRUD operations.
-Demonstrates async endpoints and dependency injection.
+Book routes - FastAPI route handlers.
 """
 from uuid import UUID
 from typing import Optional
@@ -9,10 +8,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from decimal import Decimal
 
 from app.database import get_db
-from app.schemas.book import BookCreate, BookUpdate, BookResponse, BookListResponse
-from app.schemas.auth import UserResponse
-from app.routers.auth import get_current_user
-from app.services.book_service import BookService
+from app.features.books.schemas import (
+    BookCreate,
+    BookUpdate,
+    BookResponse,
+    BookListResponse,
+)
+from app.features.auth.schemas import UserResponse
+from app.features.auth.routes import get_current_user
+from app.features.books.service import BookService
 
 router = APIRouter()
 
@@ -29,11 +33,8 @@ async def get_books(
     sort_by: Optional[str] = Query(None),
     sort_order: Optional[str] = Query("ASC", pattern="^(ASC|DESC)$"),
     db: AsyncSession = Depends(get_db),
-):
-    """
-    Get paginated list of books with filtering and sorting.
-    Demonstrates query parameters and async database operations.
-    """
+) -> BookListResponse:
+    """Get paginated list of books with filtering and sorting."""
     result = await BookService.get_books(
         db=db,
         page=page,
@@ -55,11 +56,8 @@ async def get_my_books(
     limit: int = Query(1000, ge=1, le=1000),
     db: AsyncSession = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
-):
-    """
-    Get current user's books.
-    Demonstrates authentication dependency.
-    """
+) -> BookListResponse:
+    """Get current user's books."""
     result = await BookService.get_my_books(
         db=db,
         seller_id=current_user.id,
@@ -73,11 +71,8 @@ async def get_my_books(
 async def get_book_by_id(
     book_id: UUID,
     db: AsyncSession = Depends(get_db),
-):
-    """
-    Get a book by ID.
-    Demonstrates path parameters and error handling.
-    """
+) -> BookResponse:
+    """Get a book by ID."""
     book = await BookService.get_book_by_id(db, book_id)
     if not book:
         raise HTTPException(
@@ -87,16 +82,15 @@ async def get_book_by_id(
     return BookResponse.model_validate(book)
 
 
-@router.post("", response_model=BookResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "", response_model=BookResponse, status_code=status.HTTP_201_CREATED
+)
 async def create_book(
     book_data: BookCreate,
     db: AsyncSession = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
-):
-    """
-    Create a new book.
-    Demonstrates POST endpoint with authentication.
-    """
+) -> BookResponse:
+    """Create a new book."""
     book = await BookService.create_book(
         db=db,
         book_data=book_data,
@@ -111,11 +105,8 @@ async def update_book(
     book_data: BookUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
-):
-    """
-    Update a book.
-    Demonstrates PUT endpoint with authorization check.
-    """
+) -> BookResponse:
+    """Update a book."""
     book = await BookService.update_book(
         db=db,
         book_id=book_id,
@@ -135,11 +126,8 @@ async def delete_book(
     book_id: UUID,
     db: AsyncSession = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
-):
-    """
-    Delete a book.
-    Demonstrates DELETE endpoint with authorization check.
-    """
+) -> dict:
+    """Delete a book."""
     deleted = await BookService.delete_book(
         db=db,
         book_id=book_id,

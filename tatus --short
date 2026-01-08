@@ -1,0 +1,416 @@
+app/database.py:56: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:14: trailing whitespace.
+[32m+[m[32mfrom app.features.auth import routes as auth_routes[m[41m[m
+app/main.py:15: trailing whitespace.
+[32m+[m[32mfrom app.features.books import routes as books_routes[m[41m[m
+app/main.py:16: trailing whitespace.
+[32m+[m[32mfrom app.features.user import routes as user_routes[m[41m[m
+app/main.py:17: trailing whitespace.
+[32m+[m[32mfrom app.features.upload import routes as upload_routes[m[41m[m
+app/main.py:33: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:43: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:51: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:53: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:55: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:81: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:90: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:91: trailing whitespace.
+[32m+[m[32m    # Include feature-based routers[m[41m[m
+app/main.py:92: trailing whitespace.
+[32m+[m[32m    app.include_router([m[41m[m
+app/main.py:93: trailing whitespace.
+[32m+[m[32m        auth_routes.router, prefix="/api/auth", tags=["auth"][m[41m[m
+app/main.py:94: trailing whitespace.
+[32m+[m[32m    )[m[41m[m
+app/main.py:95: trailing whitespace.
+[32m+[m[32m    app.include_router([m[41m[m
+app/main.py:96: trailing whitespace.
+[32m+[m[32m        books_routes.router, prefix="/api/books", tags=["books"][m[41m[m
+app/main.py:97: trailing whitespace.
+[32m+[m[32m    )[m[41m[m
+app/main.py:98: trailing whitespace.
+[32m+[m[32m    app.include_router([m[41m[m
+app/main.py:99: trailing whitespace.
+[32m+[m[32m        user_routes.router, prefix="/api/user", tags=["user"][m[41m[m
+app/main.py:100: trailing whitespace.
+[32m+[m[32m    )[m[41m[m
+app/main.py:101: trailing whitespace.
+[32m+[m[32m    app.include_router([m[41m[m
+app/main.py:102: trailing whitespace.
+[32m+[m[32m        upload_routes.router, prefix="/api/upload", tags=["upload"][m[41m[m
+app/main.py:103: trailing whitespace.
+[32m+[m[32m    )[m[41m[m
+app/main.py:104: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:118: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:123: trailing whitespace.
+[32m+[m[41m[m
+app/main.py:131: trailing whitespace.
+[32m+[m[41m[m
+app/models/base.py:12: trailing whitespace.
+[32m+[m[41m[m
+app/models/base.py:16: trailing whitespace.
+[32m+[m[41m[m
+app/models/book.py:21: trailing whitespace.
+[32m+[m[41m[m
+app/models/book.py:23: trailing whitespace.
+[32m+[m[41m[m
+app/models/book.py:41: trailing whitespace.
+[32m+[m[41m[m
+app/models/user.py:19: trailing whitespace.
+[32m+[m[41m[m
+app/models/user.py:21: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:39: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:45: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:54: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:58: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:66: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:74: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:92: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:98: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:136: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:139: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:142: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:152: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:159: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:178: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:183: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:188: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:195: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:202: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:208: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:218: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:222: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:227: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:235: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:242: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:246: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:251: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:254: trailing whitespace.
+[32m+[m[41m[m
+app/routers/auth.py:257: trailing whitespace.
+[32m+[m[41m[m
+app/routers/user.py:32: trailing whitespace.
+[32m+[m[41m[m
+app/routers/user.py:38: trailing whitespace.
+[32m+[m[41m[m
+app/routers/user.py:42: trailing whitespace.
+[32m+[m[41m[m
+app/routers/user.py:48: trailing whitespace.
+[32m+[m[41m[m
+app/routers/user.py:54: trailing whitespace.
+[32m+[m[32m    return UserResponse.model_validate(user)[m[41m[m
+app/schemas/auth.py:10: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/auth.py:17: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/auth.py:24: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/auth.py:33: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/auth.py:38: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/book.py:16: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/book.py:25: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/book.py:42: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/book.py:55: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/book.py:61: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/book.py:71: trailing whitespace.
+[32m+[m[41m[m
+app/schemas/book.py:78: trailing whitespace.
+[32m+[m[41m[m
+app/services/auth_service.py:40: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:24: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:34: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:39: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:52: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:60: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:64: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:74: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:91: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:103: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:109: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:112: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:115: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:118: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:121: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:124: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:133: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:136: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:142: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:145: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:156: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:160: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:164: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:167: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:175: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:186: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:192: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:204: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:207: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:210: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:213: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:218: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:223: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:240: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:252: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:254: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:264: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:269: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:280: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:283: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:287: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:298: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:304: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:309: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:316: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:324: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:328: trailing whitespace.
+[32m+[m[41m[m
+app/services/book_service.py:331: trailing whitespace.
+[32m+[m[41m[m
+app/services/oauth_service.py:32: trailing whitespace.
+[32m+[m[41m[m
+app/services/oauth_service.py:40: trailing whitespace.
+[32m+[m[41m[m
+app/services/oauth_service.py:50: trailing whitespace.
+[32m+[m[41m[m
+app/services/oauth_service.py:59: trailing whitespace.
+[32m+[m[41m[m
+app/services/oauth_service.py:65: trailing whitespace.
+[32m+[m[32m    return user, True[m[41m[m
+app/utils/background_tasks.py:18: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:24: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:33: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:41: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:45: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:48: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:51: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:59: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:63: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:68: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:72: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:75: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:82: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:87: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:90: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:94: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:97: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:104: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:111: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:115: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:118: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:122: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:129: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:136: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:140: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:143: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:149: trailing whitespace.
+[32m+[m[41m[m
+app/utils/background_tasks.py:153: trailing whitespace.
+[32m+[m[32m        return task[m[41m[m
+app/utils/decorators.py:7: trailing whitespace.
+[32m+[m[32mimport logging[m[41m[m
+app/utils/decorators.py:14: trailing whitespace.
+[32m+[m[32mlogger = logging.getLogger(__name__)[m[41m[m
+app/utils/decorators.py:15: trailing whitespace.
+[32m+[m[41m[m
+app/utils/decorators.py:21: trailing whitespace.
+[32m+[m[41m[m
+app/utils/decorators.py:31: trailing whitespace.
+[32m+[m[41m[m
+app/utils/decorators.py:35: trailing whitespace.
+[32m+[m[41m[m
+app/utils/decorators.py:36: trailing whitespace.
+[32m+[m[32m            logger.info([m[41m[m
+app/utils/decorators.py:40: trailing whitespace.
+[32m+[m[41m[m
+app/utils/decorators.py:44: trailing whitespace.
+[32m+[m[32m            logger.error([m[41m[m
+app/utils/decorators.py:46: trailing whitespace.
+[32m+[m[32m                f"failed after {execution_time:.4f}s: {str(e)}",[m[41m[m
+app/utils/decorators.py:47: trailing whitespace.
+[32m+[m[32m                exc_info=True[m[41m[m
+app/utils/decorators.py:50: trailing whitespace.
+[32m+[m[41m[m
+app/utils/decorators.py:55: trailing whitespace.
+[32m+[m[41m[m
+app/utils/decorators.py:59: trailing whitespace.
+[32m+[m[41m[m
+app/utils/decorators.py:60: trailing whitespace.
+[32m+[m[32m            logger.info([m[41m[m
+app/utils/decorators.py:64: trailing whitespace.
+[32m+[m[41m[m
+app/utils/decorators.py:68: trailing whitespace.
+[32m+[m[32m            logger.error([m[41m[m
+app/utils/decorators.py:70: trailing whitespace.
+[32m+[m[32m                f"failed after {execution_time:.4f}s: {str(e)}",[m[41m[m
+app/utils/decorators.py:71: trailing whitespace.
+[32m+[m[32m                exc_info=True[m[41m[m
+app/utils/decorators.py:74: trailing whitespace.
+[32m+[m[41m[m
+app/utils/decorators.py:82: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:15: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:19: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:22: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:27: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:30: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:44: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:48: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:53: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:56: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:58: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:63: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:66: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:73: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:78: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:80: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:90: trailing whitespace.
+[32m+[m[41m[m
+app/utils/file_reader.py:93: trailing whitespace.
+[32m+[m[41m[m
+pyrightconfig.json:3: trailing whitespace.
+[32m+[m[32m  "exclude": ["**/__pycache__", "**/node_modules", "venv"],[m[41m[m
+pyrightconfig.json:4: trailing whitespace.
+[32m+[m[32m  "reportMissingImports": "warning",[m[41m[m
+pyrightconfig.json:6: trailing whitespace.
+[32m+[m[32m  "pythonVersion": "3.12",[m[41m[m
+pyrightconfig.json:7: trailing whitespace.
+[32m+[m[32m  "typeCheckingMode": "basic",[m[41m[m
+pyrightconfig.json:8: trailing whitespace.
+[32m+[m[32m  "venvPath": ".",[m[41m[m
+pyrightconfig.json:9: trailing whitespace.
+[32m+[m[32m  "venv": "venv"[m[41m[m
+requirements.txt:16: trailing whitespace.
+[32m+[m[32maiosmtplib==3.0.1[m[41m[m
+requirements.txt:17: trailing whitespace.
+[32m+[m[32mpre-commit==3.6.0[m[41m[m

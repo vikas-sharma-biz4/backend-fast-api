@@ -9,7 +9,12 @@ import uuid
 from typing import Literal, Optional
 
 from app.database import Base
+from typing import TYPE_CHECKING
+
 from app.models.base import TimestampMixin
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 BookType = Literal["fiction", "non-fiction", "academic", "biography", "other"]
@@ -18,9 +23,9 @@ BookCondition = Literal["new", "like-new", "good", "fair", "poor"]
 
 class Book(Base, TimestampMixin):
     """Book model for the marketplace."""
-    
+
     __tablename__ = "books"
-    
+
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     author: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -38,7 +43,6 @@ class Book(Base, TimestampMixin):
         default="good",
     )
     image_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
-    
+
     # Relationship
     seller: Mapped["User"] = relationship("User", backref="books")
-

@@ -9,11 +9,11 @@ from sqlalchemy.ext.declarative import declared_attr
 
 class TimestampMixin:
     """Mixin for timestamp fields."""
-    
+
     @declared_attr
     def created_at(cls) -> Mapped[datetime]:
         return mapped_column(DateTime, default=datetime.utcnow, nullable=False)
-    
+
     @declared_attr
     def updated_at(cls) -> Mapped[datetime]:
         return mapped_column(
@@ -22,4 +22,3 @@ class TimestampMixin:
             onupdate=datetime.utcnow,
             nullable=False,
         )
-

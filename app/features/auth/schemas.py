@@ -1,5 +1,5 @@
 """
-Authentication schemas.
+Authentication schemas - Pydantic models for request/response validation.
 """
 from uuid import UUID
 from pydantic import BaseModel, EmailStr, Field
@@ -35,6 +35,7 @@ class UserResponse(BaseModel):
     name: str
     email: str
     role: str
+    profile_picture_url: str | None = None
 
     class Config:
         from_attributes = True

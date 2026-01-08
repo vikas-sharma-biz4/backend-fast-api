@@ -29,7 +29,7 @@ async def create_or_update_oauth_user(
 ) -> tuple[User, bool]:
     """
     Create or update user from Google OAuth.
-    
+
     Returns:
         Tuple of (user, is_new_user)
     """
@@ -37,7 +37,7 @@ async def create_or_update_oauth_user(
     user = await get_user_by_google_id(db, google_id)
     if user:
         return user, False
-    
+
     # Check if user exists with this email
     existing_user = await get_user_by_email(db, email)
     if existing_user:
@@ -47,7 +47,7 @@ async def create_or_update_oauth_user(
         await db.refresh(existing_user)  # Refresh to get updated timestamps
         await db.commit()
         return existing_user, False
-    
+
     # Create new user (OAuth users don't have passwords)
     user = User(
         name=name,
@@ -56,11 +56,10 @@ async def create_or_update_oauth_user(
         role="buyer",  # Default role
         google_id=google_id,
     )
-    
+
     db.add(user)
     await db.flush()  # Flush to get the ID without committing
     await db.refresh(user)  # Refresh to get all computed fields (timestamps)
     await db.commit()
-    
-    return user, True
 
+    return user, True

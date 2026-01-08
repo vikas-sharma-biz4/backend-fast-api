@@ -1,0 +1,3 @@
+"""
+User feature module.
+"""

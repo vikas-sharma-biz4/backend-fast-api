@@ -1,0 +1,3 @@
+"""
+Books feature module.
+"""

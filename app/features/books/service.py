@@ -1,6 +1,5 @@
 """
 Book service layer with business logic.
-Demonstrates async database operations and type safety.
 """
 from uuid import UUID
 from typing import Optional
@@ -10,7 +9,7 @@ from sqlalchemy.orm import selectinload
 from decimal import Decimal
 
 from app.models.book import Book
-from app.schemas.book import (
+from app.features.books.schemas import (
     BookCreate,
     BookUpdate,
     BookListResponse,
@@ -29,24 +28,14 @@ class BookService:
         book_data: BookCreate,
         seller_id: UUID,
     ) -> Book:
-        """
-        Create a new book.
-
-        Args:
-            db: Database session
-            book_data: Book creation data
-            seller_id: ID of the seller creating the book
-
-        Returns:
-            Created book
-        """
+        """Create a new book."""
         book = Book(
             **book_data.model_dump(),
             seller_id=seller_id,
         )
         db.add(book)
-        await db.flush()  # Flush to get the ID without committing
-        await db.refresh(book)  # Refresh to get all computed fields
+        await db.flush()
+        await db.refresh(book)
         await db.commit()
         return book
 
@@ -55,16 +44,7 @@ class BookService:
     async def get_book_by_id(
         db: AsyncSession, book_id: UUID
     ) -> Optional[Book]:
-        """
-        Get a book by ID.
-
-        Args:
-            db: Database session
-            book_id: Book ID
-
-        Returns:
-            Book if found, None otherwise
-        """
+        """Get a book by ID."""
         result = await db.execute(
             select(Book)
             .where(Book.id == book_id)
@@ -86,28 +66,8 @@ class BookService:
         sort_by: Optional[str] = None,
         sort_order: Optional[str] = "ASC",
     ) -> BookListResponse:
-        """
-        Get paginated list of books with filtering and sorting.
-
-        Args:
-            db: Database session
-            page: Page number
-            limit: Items per page
-            type: Filter by book type
-            condition: Filter by condition
-            search: Search in title and author
-            min_price: Minimum price filter
-            max_price: Maximum price filter
-            sort_by: Field to sort by
-            sort_order: Sort order (ASC/DESC)
-
-        Returns:
-            Paginated book list
-        """
-        # Build query
+        """Get paginated list of books with filtering and sorting."""
         query = select(Book)
-
-        # Apply filters
         conditions = []
 
         if type:
@@ -134,8 +94,6 @@ class BookService:
         if conditions:
             query = query.where(and_(*conditions))
 
-        # Optimized: Get total count using the same conditions
-        # Use a subquery to avoid duplicating conditions
         count_query = select(func.count(Book.id))
         if conditions:
             count_query = count_query.where(and_(*conditions))
@@ -143,7 +101,6 @@ class BookService:
         total_result = await db.execute(count_query)
         total = total_result.scalar() or 0
 
-        # Apply sorting
         if sort_by:
             sort_column = getattr(Book, sort_by, None)
             if sort_column:
@@ -154,15 +111,12 @@ class BookService:
         else:
             query = query.order_by(Book.created_at.desc())
 
-        # Apply pagination
         offset = (page - 1) * limit
         query = query.offset(offset).limit(limit)
 
-        # Execute query
         result = await db.execute(query)
         books = result.scalars().all()
 
-        # Calculate total pages
         total_pages = (total + limit - 1) // limit if total > 0 else 0
 
         return BookListResponse(
@@ -181,20 +135,7 @@ class BookService:
         seller_id: UUID,
         book_data: BookUpdate,
     ) -> Optional[Book]:
-        """
-        Update a book.
-
-        Args:
-            db: Database session
-            book_id: Book ID
-            seller_id: Seller ID (for authorization)
-            book_data: Book update data
-
-        Returns:
-            Updated book if found and authorized, None otherwise
-        """
-        # Optimized: Only fetch book with seller_id check,
-        # no need to load seller relationship
+        """Update a book."""
         result = await db.execute(
             select(Book).where(
                 and_(Book.id == book_id, Book.seller_id == seller_id)
@@ -205,14 +146,11 @@ class BookService:
         if not book:
             return None
 
-        # Update only provided fields
         update_data = book_data.model_dump(exclude_unset=True)
 
         if not update_data:
             return book
 
-        # Build SET clause with proper enum casting for PostgreSQL
-        # Database enum types are enum_books_condition and enum_books_type
         set_clauses = []
         params = {"book_id": book_id, "seller_id": seller_id}
 
@@ -222,9 +160,6 @@ class BookService:
                 params[param_name] = value
 
                 if field in ("condition", "type"):
-                    # Cast to the database enum type explicitly
-                    # PostgreSQL enum types: enum_books_condition,
-                    # enum_books_type
                     db_enum_type = (
                         "enum_books_condition"
                         if field == "condition"
@@ -234,12 +169,9 @@ class BookService:
                         f"{field} = CAST(:{param_name} AS {db_enum_type})"
                     )
                 else:
-                    set_clauses.append(
-                        f"{field} = :{param_name}"
-                    )
+                    set_clauses.append(f"{field} = :{param_name}")
 
         if set_clauses:
-            # Use raw SQL with explicit enum casting to avoid type mismatch
             sql = text(
                 f"UPDATE books SET {', '.join(set_clauses)}, "
                 "updated_at = CURRENT_TIMESTAMP "
@@ -247,7 +179,6 @@ class BookService:
             )
             await db.execute(sql, params)
             await db.commit()
-            # Refresh to get updated book
             await db.refresh(book)
 
         return book
@@ -259,18 +190,7 @@ class BookService:
         book_id: UUID,
         seller_id: UUID,
     ) -> bool:
-        """
-        Delete a book.
-
-        Args:
-            db: Database session
-            book_id: Book ID
-            seller_id: Seller ID (for authorization)
-
-        Returns:
-            True if deleted, False otherwise
-        """
-        # Optimized: Fetch only ID to check existence, then delete
+        """Delete a book."""
         result = await db.execute(
             select(Book).where(
                 and_(Book.id == book_id, Book.seller_id == seller_id)
@@ -293,28 +213,15 @@ class BookService:
         page: int = 1,
         limit: int = 1000,
     ) -> BookListResponse:
-        """
-        Get books by seller ID.
-
-        Args:
-            db: Database session
-            seller_id: Seller ID
-            page: Page number
-            limit: Items per page
-
-        Returns:
-            Paginated book list
-        """
+        """Get books by seller ID."""
         query = select(Book).where(Book.seller_id == seller_id)
 
-        # Optimized: Get total count using Book.id for better performance
         count_query = select(func.count(Book.id)).where(
             Book.seller_id == seller_id
         )
         total_result = await db.execute(count_query)
         total = total_result.scalar() or 0
 
-        # Apply pagination
         offset = (page - 1) * limit
         query = (
             query.order_by(Book.created_at.desc())
@@ -322,11 +229,9 @@ class BookService:
             .limit(limit)
         )
 
-        # Execute query
         result = await db.execute(query)
         books = result.scalars().all()
 
-        # Calculate total pages
         total_pages = (total + limit - 1) // limit if total > 0 else 0
 
         return BookListResponse(

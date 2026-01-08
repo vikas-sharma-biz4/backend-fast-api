@@ -8,6 +8,7 @@ from typing import AsyncGenerator
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 
 from app.config import settings
 from app.database import engine, init_db
@@ -120,6 +121,14 @@ def create_app() -> FastAPI:
     async def health_check() -> dict[str, str]:
         """Health check endpoint."""
         return {"status": "healthy"}
+
+    @app.get("/service-worker.js")
+    async def service_worker() -> Response:
+        """
+        Handle service worker requests.
+        Returns empty response as service workers are handled by frontend.
+        """
+        return Response(content="", media_type="application/javascript")
 
     return app
 

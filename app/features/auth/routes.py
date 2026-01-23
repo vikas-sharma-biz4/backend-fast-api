@@ -304,7 +304,7 @@ async def google_oauth_callback(
             redirect_params["newUser"] = "true"
 
         redirect_url = (
-            f"{settings.FRONTEND_URL}/auth/callback?{urlencode(redirect_params)}"
+            f"{settings.FRONTEND_URL}/api/auth/oauth-callback?{urlencode(redirect_params)}"
         )
         return RedirectResponse(url=redirect_url)
 

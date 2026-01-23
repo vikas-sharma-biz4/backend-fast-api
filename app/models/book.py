@@ -27,20 +27,22 @@ class Book(Base, TimestampMixin):
     __tablename__ = "books"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
-    author: Mapped[str] = mapped_column(String(255), nullable=False)
-    isbn: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
+    title: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    author: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    isbn: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, unique=True, index=True)
     type: Mapped[str] = mapped_column(
         SQLEnum("fiction", "non-fiction", "academic", "biography", "other", name="book_type"),
         nullable=False,
+        index=True,
     )
-    price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
+    price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, index=True)
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    seller_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    seller_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
     condition: Mapped[str] = mapped_column(
         SQLEnum("new", "like-new", "good", "fair", "poor", name="book_condition"),
         nullable=False,
         default="good",
+        index=True,
     )
     image_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
 

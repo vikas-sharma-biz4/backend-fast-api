@@ -114,6 +114,9 @@ class BookService:
         offset = (page - 1) * limit
         query = query.offset(offset).limit(limit)
 
+        # Optimize: Use selectinload to prevent N+1 queries when accessing seller relationship
+        query = query.options(selectinload(Book.seller))
+
         result = await db.execute(query)
         books = result.scalars().all()
 
@@ -227,6 +230,7 @@ class BookService:
             query.order_by(Book.created_at.desc())
             .offset(offset)
             .limit(limit)
+            .options(selectinload(Book.seller))  # Prevent N+1 queries
         )
 
         result = await db.execute(query)

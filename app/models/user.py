@@ -27,6 +27,7 @@ class User(Base, TimestampMixin):
         SQLEnum("buyer", "seller", "admin", name="user_role"),
         nullable=False,
         default="buyer",
+        index=True,
     )
-    google_id: Mapped[Optional[str]] = mapped_column(String(255), unique=True, nullable=True)
+    google_id: Mapped[Optional[str]] = mapped_column(String(255), unique=True, nullable=True, index=True)
     profile_picture_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
